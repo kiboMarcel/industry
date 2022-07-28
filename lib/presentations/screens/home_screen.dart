@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:industry/utils/dimensions.dart';
 
+import '../widgets/card_widget.dart';
+import 'operation_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -9,6 +12,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  static const String id = 'home_screen';
   late ScrollController _scrollController;
 
   @override
@@ -20,15 +24,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF3B4254),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xFF3B4254),
         elevation: 0,
         centerTitle: true,
         title: InkWell(
           onTap: () => _scrollController.jumpTo(0),
           child: Text(
             'App Name',
-            style: TextStyle(color: Colors.black45),
+            style: TextStyle(color: Colors.white),
           ),
         ),
         actions: [
@@ -38,8 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             icon: Icon(
               Icons.search_rounded,
-              size: Dimensions.iconseSize24,
-              color: Colors.black45,
+              size: Dimensions.iconseSize24 + 10,
+              color: Colors.white,
             ),
           ),
         ],
@@ -58,11 +63,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: 20,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.all(3.0),
-                    child: ListTile(
-                      onTap: () {},
-                      leading: Icon(Icons.build),
-                      title: Text('Machine ${index + 1} '),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 1, horizontal: 3),
+                    child: CardWidget(
+                      text: 'Machine ${index + 1} ',
+                      subtitle: 'Fonction 1, Fonction 2 ...',
+                      icon: Icon(Icons.build, color: Colors.white, size: 40),
+                      onTap: () {
+                        Navigator.pushNamed(context, OperationScreen.id);
+                      },
                     ),
                   );
                 }),
