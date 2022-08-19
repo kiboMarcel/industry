@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:industry/utils/dimensions.dart';
+import 'package:http/http.dart' as http;
 
+import '../../constants/urls.dart';
+import '../../data/models/equipement.dart';
 import '../widgets/card_widget.dart';
 import 'operation_screen.dart';
 
@@ -13,12 +18,26 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   static const String id = 'home_screen';
+  late Future<List<Equipement>> futureEquipement;
   late ScrollController _scrollController;
 
   @override
   void initState() {
     _scrollController = ScrollController();
+    futureEquipement = fetchEquipement();
     super.initState();
+  }
+
+  Future<List<Equipement>> fetchEquipement() async {
+    http.Response response =
+        await http.get(Uri.parse("http://192.168.1.109:2022/api/machines"));
+
+    List equipements = jsonDecode(response.body);
+
+    print(equipements);
+    return equipements
+        .map((equipement) => Equipement.fromJson(equipement))
+        .toList();
   }
 
   @override
